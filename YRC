@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Revenue Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 48%;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>YouTube Revenue Calculator</h2>
+        
+        <label>Total Views:</label>
+        <input type="number" id="views" placeholder="Enter total views" required>
+
+        <label>CPM ($ per 1000 views):</label>
+        <input type="number" id="cpm" placeholder="Enter CPM" step="0.01" required>
+
+        <label>Exchange Rate (1 USD = ? Local Currency):</label>
+        <input type="number" id="exchangeRate" placeholder="Enter exchange rate" step="0.01" required>
+
+        <label>Watch Time Per View (minutes):</label>
+        <input type="number" id="watchTime" placeholder="Enter watch time per view" step="0.01">
+
+        <label>Click-Through Rate (CTR %):</label>
+        <input type="number" id="ctr" placeholder="Enter CTR percentage" step="0.01">
+
+        <button onclick="calculateRevenue()">Calculate</button>
+        <button onclick="resetFields()">Reset</button>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculateRevenue() {
+            let views = parseFloat(document.getElementById("views").value);
+            let cpm = parseFloat(document.getElementById("cpm").value);
+            let exchangeRate = parseFloat(document.getElementById("exchangeRate").value);
+            let watchTime = parseFloat(document.getElementById("watchTime").value);
+            let ctr = parseFloat(document.getElementById("ctr").value);
+
+            if (isNaN(views) || isNaN(cpm) || isNaN(exchangeRate) || views <= 0 || cpm <= 0 || exchangeRate <= 0) {
+                document.getElementById("result").innerHTML = "❌ Please enter valid numbers!";
+                return;
+            }
+
+            // YouTube Revenue Calculation
+            let revenueUSD = (views / 1000) * cpm * 0.55;  // 55% revenue share for YouTubers
+            let revenueLocal = revenueUSD * exchangeRate;
+
+            // Additional Watch Time & CTR Impact
+            let totalWatchTime = views * watchTime;
+            let totalClicks = views * (ctr / 100);
+
+            // Display Results
+            document.getElementById("result").innerHTML = `
+                ✅ Estimated Earnings: <br>
+                💵 USD: $${revenueUSD.toFixed(2)} <br>
+                💰 Local Currency: ${revenueLocal.toFixed(2)} <br>
+                ⏳ Total Watch Time: ${totalWatchTime.toFixed(2)} minutes <br>
+                🔥 Estimated Clicks: ${totalClicks.toFixed(2)}
+            `;
+        }
+
+        function resetFields() {
+            document.getElementById("views").value = "";
+            document.getElementById("cpm").value = "";
+            document.getElementById("exchangeRate").value = "";
+            document.getElementById("watchTime").value = "";
+            document.getElementById("ctr").value = "";
+            document.getElementById("result").innerHTML = "";
+        }
+    </script>
+
+
+<footer style="margin-top: 20px; font-size: 14px; color: #555;">
+        <p>💡 Developed by <strong>TᗩᗯᕼIᗪ ᗰᗩᕼᗰᑌᗪ</strong> | <strong>ᐯIՏIOᑎ ᗷᗴYOᑎᗪ ᒪIᗰITՏ</strong> 💡</p>
+    </footer>
+
+</body>
+</html>
